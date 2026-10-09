@@ -59,12 +59,6 @@ const canManage = (config.manageRoles ?? ["ADMIN", "LECTURER"]).includes(role);
   };
 
   const handleDelete = async (row) => {
-    // if (
-    //   !window.confirm(
-    //     `Delete this ${config.singular.toLowerCase()}? This cannot be undone.`,
-    //   )
-    // )
-    //   return;
     try {
       await api.delete(`${config.endpoint}/${row.id}`);
       load();
@@ -77,19 +71,6 @@ const canManage = (config.manageRoles ?? ["ADMIN", "LECTURER"]).includes(role);
     <Layout>
       {({ onMenuClick }) => (
         <>
-          {/* <Topbar
-            title={config.label}
-            subtitle={`${rows?.length ?? "…"} record${rows?.length === 1 ? "" : "s"}`}
-            onMenuClick={onMenuClick}
-            action={
-              <button
-                onClick={openCreate}
-                className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-ink-light transition-colors"
-              >
-                New {config.singular}
-              </button>
-            }
-          /> */}
           <Topbar
             title={config.label}
             subtitle={`${rows?.length ?? "…"} record${rows?.length === 1 ? "" : "s"}`}
@@ -112,12 +93,6 @@ const canManage = (config.manageRoles ?? ["ADMIN", "LECTURER"]).includes(role);
                 {error}
               </p>
             )}
-            {/* <DataTable
-              columns={config.columns}
-              rows={rows}
-              onEdit={openEdit}
-              onDelete={handleDelete}
-            /> */}
             <DataTable
               columns={config.columns}
               rows={rows}

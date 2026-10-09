@@ -1,16 +1,3 @@
-// Each entry describes one resource end-to-end: where it lives on the API,
-// how its table renders, and what its create/edit form asks for.
-//
-// column.key supports dot-paths into nested include'd data
-// (e.g. "department.faculty.name") since most of the backend's GET-all
-// routes already include related records.
-//
-// field.type: "text" | "number" | "select"
-// select fields fetch `optionsEndpoint`, then build a label with
-// `optionLabel` (a dot-path string) or `optionLabelFn` (a function),
-// and use `optionValue` (default "id") as the stored value.
-
-
 
 export const resourceConfig = {
   faculty: {
@@ -230,6 +217,6 @@ export const resourceConfig = {
   },
 };
 
-// Nested path reader used by DataTable and the form's select labels.
+
 export const getPath = (obj, path) =>
   path.split(".").reduce((acc, key) => (acc == null ? acc : acc[key]), obj);

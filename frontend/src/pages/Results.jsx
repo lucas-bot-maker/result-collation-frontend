@@ -15,10 +15,23 @@ const FIELDS = [
     type: "select",
     required: true,
     optionsEndpoint: "/enrollment",
-    optionLabelFn: (o) => `${o.student?.matricNo || o.studentId} — ${o.offering?.course?.code || ""}`,
+    optionLabelFn: (o) =>
+      `${o.student?.matricNo || o.studentId} — ${o.offering?.course?.code || ""}`,
   },
-  { name: "caScore", label: "CA Score", type: "number", required: true, placeholder: "20" },
-  { name: "examScore", label: "Exam Score", type: "number", required: true, placeholder: "55" },
+  {
+    name: "caScore",
+    label: "CA Score",
+    type: "number",
+    required: true,
+    placeholder: "20",
+  },
+  {
+    name: "examScore",
+    label: "Exam Score",
+    type: "number",
+    required: true,
+    placeholder: "55",
+  },
 ];
 
 const COLUMNS = [
@@ -28,12 +41,15 @@ const COLUMNS = [
   { key: "examScore", label: "Exam" },
   { key: "totalScore", label: "Total" },
   { key: "grade", label: "Grade" },
-  { key: "status", label: "Status", render: (row) => <StatusBadge status={row.status} /> },
+  {
+    key: "status",
+    label: "Status",
+    render: (row) => <StatusBadge status={row.status} />,
+  },
 ];
 
 export default function Results() {
-  // const { role } = useRole();
-  // const canManage = (config.manageRoles ?? ["ADMIN", "LECTURER"]).includes(role);
+  const { canManage } = useRole();
   const [rows, setRows] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
@@ -60,7 +76,6 @@ export default function Results() {
   };
 
   const handleDelete = async (row) => {
-    // if (!window.confirm("Delete this result? This cannot be undone.")) return;
     try {
       await api.delete(`/result/${row.id}`);
       load();
@@ -91,23 +106,12 @@ export default function Results() {
             onMenuClick={onMenuClick}
 
             action={
-              <button
-                onClick={() => setModalOpen(true)}
-                className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-ink-light transition-colors"
-              >
-                New Result
-              </button>
+              canManage ? (
+                <button onClick={() => setModalOpen(true)} className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-ink-light transition-colors">
+                  New Result
+                </button>
+              ) : null
             }
-            //      action={
-            //   canManage ? (
-            //     <button
-            //     onClick={() => setModalOpen(true)}
-            //     className="rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-ink-light transition-colors"
-            //   >
-            //     New Result
-            //   </button>
-            //   ) : null
-            // }
           />
 
           <main className="flex-1 px-5 py-6 md:px-8">
@@ -144,7 +148,11 @@ export default function Results() {
             />
           </main>
 
-          <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="New Result">
+          <Modal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+            title="New Result"
+          >
             <ResourceForm
               fields={FIELDS}
               submitLabel="Submit result"
@@ -157,4 +165,3 @@ export default function Results() {
     </Layout>
   );
 }
-
